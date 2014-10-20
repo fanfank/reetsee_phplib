@@ -5,6 +5,26 @@
  * @desc   A simple lib for sql assembling
  */
 class Reetsee_Db_Sql {
+    //DELETE {OPTION1 OPTION2 .. OPTIONn}
+    //  FROM [TABLE]
+    //      WHERE field1='1' AND field2>'2' AND ... AND fieldn<'n'
+    //          ORDER BY field1 LIMIT 10;
+    //
+    //INSERT {OPTION1 OPTION2 ... OPTIONn} 
+    //  INTO [TABLE] (`field1`, `field2`, ..., `fieldn`) VALUES ('1', '2', ..., 'n') 
+    //      ON DUPLICATE KEY UPDATE field1='1', field2='2', ..., fieldn='n';
+    //
+    //SELECT {OPTION1 OPTION2 ... OPTIONn}
+    //  FROM [TABLE]
+    //      WHERE field1='1' AND field2>'2' AND ... AND fieldn<'n'
+    //          ORDER BY field1 LIMIT 10, 20;
+    //
+    //UPDATE {OPTION1 OPTION2 .. OPTIONn}
+    //  [TABLE] SET field1='1', field2='2', ..., fieldn='n'
+    //      WHERE field1='1' AND field2>'2' AND ... AND fieldn<'n'
+    //          ORDER BY field1 LIMIT 10;
+    //          
+    //
     const SQL_PART_SEL       = 1;
     const SQL_PART_FROM      = 2;
     const SQL_PART_WHERE_AND = 3;
@@ -14,7 +34,10 @@ class Reetsee_Db_Sql {
     const SQL_PART_INSERT    = 7;
     const SQL_PART_INSERT_VALUES = 8;
 
-    public static function getSqlDelete($table, $conds, $arrExtra = NULL) {
+    const SQL_PART_
+
+    public static function getSqlDelete($table, $conds, $apends = NULL, $options = NULL, $arrExtra = NULL) {
+        /*
         $arrSql   = array();
         $arrSql[] = self::_getSqlPart($table, self::SQL_PART_DEL);
         $arrSql[] = self::_getSqlPart($conds, self::SQL_PART_WHERE_AND);
@@ -24,9 +47,15 @@ class Reetsee_Db_Sql {
             }
         }
         return implode(' ', $arrSql);
+         */
+        $strSql = 'DELETE ';
+        if (!empty($options)) {
+            $strPart = self::_getSqlPart($options, );
+
+        }
     }
 
-    public static function getSqlInsert($fields, $table, $dup = NULL, $arrExtra = NULL) {
+    public static function getSqlInsert($table, $fields, $dup = NULL, $options = NULL, $arrExtra = NULL) {
         $arrSql   = array();
         $arrSql[] = self::_getSqlPart($table , self::SQL_PART_INSERT);
         $arrSql[] = self::_getSqlPart($fields, self::SQL_PART_INSERT_VALUES);
@@ -159,7 +188,7 @@ class Reetsee_Db_Sql {
         return $sql;
     }
 
-    public static function getSqlSelect($fields, $table, $conds, $arrExtra) {
+    public static function getSqlSelect($table, $fields, $conds, $appends = NULL, $options = NULL, $arrExtra = NULL) {
         $arrSql   = array();
         $arrSql[] = self::_getSqlPart($fields, self::SQL_PART_SEL);
         $arrSql[] = self::_getSqlPart($table , self::SQL_PART_FROM);
@@ -172,7 +201,7 @@ class Reetsee_Db_Sql {
         return implode(' ', $arrSql);
     }
 
-    public static function getSqlUpdate($fields, $table, $conds, $arrExtra) {
+    public static function getSqlUpdate($table, $fields, $conds = NULL, $appends = NULL, $options = NULL, $arrExtra = NULL) {
         $arrSql   = array();
         $arrSql[] = self::_getSqlPart($table , self::SQL_PART_UPDATE);
         $arrSql[] = self::_getSqlPart($fields, self::SQL_PART_VALUES);

@@ -6,11 +6,12 @@
  */
 class Reetsee_Db {
     protected $_arrCurrentConf   = array();
-    protected $_arrDb            = array();
     protected $_objCurrentDb     = NULL;
     protected $_lastAffectedRows = 0;
     protected $_lastInsertId     = NULL;
     protected $_lastSql          = '';
+
+    protected $_arrDb     = array();
 
     function __destruct() {
         foreach ($this->_arrDb as $mysqli) {
@@ -22,14 +23,16 @@ class Reetsee_Db {
      * @author xuruiqi
      * @param
      *      string $table
-     *      array  $values
+     *      array  $conds
+     *      array  $options
+     *      string $appends
      *      array  $arrExtra
      * @desc 数据库delete接口
      */
-    public function delete($table, $conds, $arrExtra) {
-        $sql = Reetsee_Db_Sql::getSqlDelete($table, $conds, $arrExtra);
+    public function delete($table, $conds, $appends = NULL, $options = NULL, $arrExtra = NULL) {
+        $sql = Reetsee_Db_Sql::getSqlDelete($table, $conds, $appends, $options, $arrExtra);
         if (empty($sql)) {
-            $this->log("Reetsee_Db_Sql::getSqlDelete Failed, table=[" . serialize($table) . "], conds=[" . serialize($conds) . "], arrExtra=[" . serialize($arrExtra) . "]");
+            $this->log("Reetsee_Db_Sql::getSqlDelete Failed, table=[" . serialize($table) . "], conds=[" . serialize($conds) . "], options=[" . serialize($options) . "], appends=[" . serialize($appends) . "], arrExtra=[" . serialize($arrExtra) . "]");
             return FALSE;
         }
         return $this->query($sql);
@@ -61,8 +64,8 @@ class Reetsee_Db {
             'port'     => $intPort,
             'db_name'  => $strDb,    
             'charset'  => $strCharset,
-            'user'     => '<forbidden>',
-            'password' => '<forbidden>',
+            'user'     => '<invisible>',
+            'password' => '<invisible>',
         );
         return $this->_arrDb[$strDb];
     }
@@ -72,6 +75,8 @@ class Reetsee_Db {
     }
 
     public function initDb($strDb, $strCharset = 'utf8', $strHost = '127.0.0.1', $intPort = 3306, $strUser = 'root', $strPassword = '123abc') {
+        return $this->getDb($strDb, $strCharset, $strHost, $intPort, $strUser, $strPassword);
+        /*
         $mysqli = new mysqli($strHost, $strUser, $strPassword, $strDb, $intPort);
         if ($mysqli->connect_errno) {
             return FALSE;
@@ -92,24 +97,27 @@ class Reetsee_Db {
             'port'     => $intPort,
             'db_name'  => $strDb,    
             'charset'  => $strCharset,
-            'user'     => '<forbidden>',
-            'password' => '<forbidden>',
+            'user'     => '<invisible>',
+            'password' => '<invisible>',
         );
         return TRUE;
+         */
     }
 
     /**
      * @author xuruiqi
      * @param
-     *      array  $fields
      *      string $table
+     *      array  $fields
+     *      array  $options
+     *      array  $dup
      *      array  $arrExtra
      * @desc 数据库insert接口
      */
-    public function insert($fields, $table, $dup = NULL, $arrExtra = NULL) {
-        $sql = Reetsee_Db_Sql::getSqlInsert($fields, $table, $dup, $arrExtra);
+    public function insert($table, $fields, $dup = NULL, $options = NULL, $arrExtra = NULL) {
+        $sql = Reetsee_Db_Sql::getSqlInsert($table, $fields, $dup, $options, $arrExtra);
         if (empty($sql)) {
-            $this->log("Reetsee_Db_Sql::getSqlInsert Failed, fields=[" . serialize($fields) . "], table=[" . serialize($table) . "], dup=[" . serialize($dup) . "], arrExtra=[" . serialize($arrExtra) . "]");
+            $this->log("Reetsee_Db_Sql::getSqlInsert Failed, table=[" . serialize($table) . "], fields=[" . serialize($fields) . "], options=[" . serialize($options) . "], arrExtra=[" . serialize($arrExtra) . "]");
             return FALSE;
         }
         return $this->query($sql);
@@ -152,16 +160,18 @@ class Reetsee_Db {
     /**
      * @author xuruiqi
      * @param
-     *      array  $fields 
      *      string $table
+     *      array  $fields 
      *      array  $conds
+     *      array  $options
+     *      string $appends
      *      array  $arrExtra
      * @desc 数据库select接口
      */
-    public function select($fields, $table, $conds, $arrExtra = NULL) {
-        $sql = Reetsee_Db_Sql::getSqlSelect($fields, $table, $conds, $arrExtra);
+    public function select($table, $fields, $conds, $appends = NULL, $options = NULL, $arrExtra = NULL) {
+        $sql = Reetsee_Db_Sql::getSqlSelect($table, $fields, $conds, $appends, $options, $arrExtra);
         if (empty($sql)) {
-            $this->log("Reetsee_Db_Sql::getSqlSelect Failed, fields=[" . serialize($fields) . "], table=[" . serialize($table) . "], conds=[" . serialize($conds) . "], arrExtra=[" . serialize($arrExtra) . "]");
+            $this->log("Reetsee_Db_Sql::getSqlSelect Failed, table=[" . serialize($table) . "], fields=[" . serialize($fields) . "], conds=[" . serialize($conds) . "], options=[" . serialize($options) . "], appends=[" . serialize($appends) . "], arrExtra=[" . serialize($arrExtra) . "]");
             return FALSE;
         }
         return $this->query($sql);
@@ -170,16 +180,18 @@ class Reetsee_Db {
     /**
      * @author xuruiqi
      * @param
-     *      array  $fields
      *      string $table
+     *      array  $fields
      *      array  $conds
+     *      array  $options
+     *      string $appends
      *      array  $arrExtra
      * @desc 数据库update接口
      */
-    public function update($fields, $table, $conds, $arrExtra = NULL) {
-        $sql = Reetsee_Db_Sql::getSqlUpdate($fields, $table, $conds, $arrExtra);
+    public function update($table, $fields, $conds = NULL, $appends = NULL, $options = NULL, $arrExtra = NULL) {
+        $sql = Reetsee_Db_Sql::getSqlUpdate($table, $fields, $conds, $appends, $options, $arrExtra);
         if (empty($sql)) {
-            $this->log("Reetsee_Db_Sql::getSqlUpdate Failed, fields=[" . serialize($fields) . "], table=[" . serialize($table) . "], conds=[" . serialize($conds) . "], arrExtra=[" . serialize($arrExtra) . "]");
+            $this->log("Reetsee_Db_Sql::getSqlUpdate Failed, table=[" . serialize($table) . "], fields=[" . serialize($fields) . "], conds=[" . serialize($conds) . "], options=[" . serialize($options) . "], appends=[" . serialize($appends) . "], arrExtra=[" . serialize($arrExtra) . "]");
             return FALSE;
         }
         return $this->query($sql);
