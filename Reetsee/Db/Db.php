@@ -9,7 +9,7 @@ class Reetsee_Db_Db {
     private   $_arrConf = array();
 
     public function __construct() {
-        $this-_mysql = mysqli_init();
+        $this->_mysql = mysqli_init();
     }
 
     function __destruct() {
@@ -29,6 +29,9 @@ class Reetsee_Db_Db {
             case 'lastSQL':
                 return $this->_mysql->lastSQL;
             case 'isConnected':
+                if (empty($this->_mysql)) {
+                    return FALSE;
+                }
                 return $this->_mysql->ping();
             case 'db':
                 return $this->_mysql;

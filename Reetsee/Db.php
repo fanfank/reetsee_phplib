@@ -10,13 +10,16 @@ class Reetsee_Db {
     function __construct() {}
     function __destruct()  {}
 
-    public function getDb($strDb) {
-        return $this->_arrConf[$strDb];
+    public static function getDb($strDb) {
+        if (empty(self::$_arrDb[$strDb])) {
+            return NULL;
+        }
+        return self::$_arrDb[$strDb];
     }
 
     public static function initDb($strDb, $strHost = '127.0.0.1', $intPort = 3306, $strUser = 'root', $strPassword = '123abc', $strCharset = 'utf8') {
         if (NULL !== self::getDb($strDb)) {
-            return $this->_arrConf[$strDb];
+            return self::$_arrDb[$strDb];
         }
 
         $db = new Reetsee_Db_Db();
@@ -24,7 +27,7 @@ class Reetsee_Db {
             return false;
         }
 
-        $this->_arrDb[$strDb] = $db;
-        return $this->_arrDb[$strDb];
+        self::$_arrDb[$strDb] = $db;
+        return self::$_arrDb[$strDb];
     }
 }

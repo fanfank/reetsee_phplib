@@ -74,7 +74,7 @@ class Reetsee_Db_Sql {
         //columns and values
         $strCols   = self::_getSqlPart(array_keys($fields), self::SQL_PART_KEY, ',');
         $strValues = self::_getSqlPart(array_values($fields), self::SQL_PART_VALUE, ',');
-        $arrSqls[] = "($strColumns) VALUES ($strValues)";
+        $arrSqls[] = "($strCols) VALUES ($strValues)";
 
         //dup
         if (!empty($dup)) {
