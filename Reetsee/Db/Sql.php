@@ -78,7 +78,7 @@ class Reetsee_Db_Sql {
 
         //dup
         if (!empty($dup)) {
-            $strDup    = self::_getSqlPart($dup, self::SQL_PART_COMBINE, ',');
+            $strDup    = self::_getSqlPart($dup, self::SQL_PART_SET, ',');
             $arrSqls[] = "ON DUPLICATE KEY UPDATE $strDup";
         }
 
