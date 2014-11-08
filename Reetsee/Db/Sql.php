@@ -85,7 +85,7 @@ class Reetsee_Db_Sql {
         return implode(' ', $arrSqls);
     }
 
-    protected static function _getSqlPart($tuples, $type, $seperator) {
+    protected static function _getSqlPart($tuples, $type = self::SQL_PART_SET, $seperator = ' ') {
         if (!is_array($tuples)) {
             return $tuples;
         }
