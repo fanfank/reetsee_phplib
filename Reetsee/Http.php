@@ -6,7 +6,11 @@
  */
 class Reetsee_Http {
     public static function get($strField, $default = NULL) {
-        $value = $_GET[$strField];
+        $value = NULL;
+
+        if (isset($_GET[$strField])) {
+            $value = $_GET[$strField];
+        }
 
         if (NULL === $value) {
             $value = $_POST[$strField];
