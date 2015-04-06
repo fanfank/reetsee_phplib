@@ -18,6 +18,8 @@ class Reetsee_Error {
     );
 
     public static function getErrmsg($errcode, $delimiter = '') {
-        return self::$_arrErrcode2Errmsg[$errcode] . $delimiter;
+        $strErrmsg = isset(self::$_arrErrcode2Errmsg[$errcode]) ?
+                self::$_arrErrcode2Errmsg[$errcode] : 'Unknown error';
+        return $strErrmsg . $delimiter;
     }
 }
