@@ -11,6 +11,7 @@ class Reetsee_Error {
     const ERR_FIELD_NOT_SET = 1001;
     const ERR_SERVICE_ERROR = 1002;
     const ERR_UI_INPUT_ERROR = 1003;
+    const ERR_GET_DB_FAIL    = 1004;
 
     //error messages
     protected static $_arrErrcode2Errmsg = array(
@@ -19,6 +20,7 @@ class Reetsee_Error {
         self::ERR_FIELD_NOT_SET => 'Accessing a non-set field',
         self::ERR_SERVICE_ERROR => 'service error',
         self::ERR_UI_INPUT_ERROR => 'UI input error',
+        self::ERR_GET_DB_FAIL    => 'Get database error',
     );
 
     public static function getErrmsg($errcode, $delimiter = '') {
