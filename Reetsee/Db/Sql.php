@@ -46,7 +46,7 @@ class Reetsee_Db_Sql {
         //conds
         if (!empty($conds)) {
             $strConds  = self::_getSqlPart($conds, self::SQL_PART_COMBINE, ' AND ');
-            $arrSqls[] = "WHERE $conds";
+            $arrSqls[] = "WHERE $strConds";
         }
 
         //appends
