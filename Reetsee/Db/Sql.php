@@ -30,7 +30,7 @@ class Reetsee_Db_Sql {
     const SQL_PART_COMBINE = 3;
     const SQL_PART_SET     = 4;
 
-    public static function getSqlDelete($table, $conds, $apends = NULL, $options = NULL, $arrExtra = NULL) {
+    public static function getSqlDelete($table, $conds, $appends = NULL, $options = NULL, $arrExtra = NULL) {
         $arrSqls = array("DELETE");
 
         //options
